@@ -1,0 +1,41 @@
+{
+  "youtube": {
+    "strings": [
+      "https://youtube.com/shorts/*",
+      "https://www.youtube.com/shorts/*"
+    ],
+    "cmd": {
+      "bin": "yt-dlp",
+      "args": [
+        "--js-runtimes",
+        "node",
+        "-t",
+        "mp4",
+        "-S",
+        "+size,+br",
+        "-o",
+        "tmp/(id).%(ext)s",
+        "(url)"
+      ]
+    }
+  },
+  "instagram": {
+    "strings": [
+      "https://www.instagram.com/reel/*"
+    ],
+    "cmd": {
+      "bin": "yt-dlp",
+      "args": [
+        "--js-runtimes",
+        "node",
+        "-t",
+        "mp4",
+        "-S",
+        "+size,+br",
+        "-o",
+        "tmp/(id).%(ext)s",
+        "(url)"
+      ]
+    }
+  }
+}
