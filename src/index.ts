@@ -209,5 +209,5 @@ client.on(Events.MessageCreate, async message => {
 });
 
 // Bot Login
-console.log(process.env.TOKEN);
+console.log(`TOKEN: ${process.env.TOKEN}`);
 client.login(process.env.TOKEN);
