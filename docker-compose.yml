@@ -5,8 +5,6 @@ services:
     build: .
     container_name: shorts-downloader
     restart: unless-stopped
-    env_file:
-      - .env
     volumes:
       - ./data:/srv/shorts-downloader/data
       - ./bin:/srv/shorts-downloader/bin
