@@ -87,7 +87,7 @@ client.on(Events.ClientReady, c => {
   console.log(`Successfully logged in as ${c.user.username}`);
   /* Check if the bins dir exists. */
   if (!existsSync(bins)) {
-    console.error("There is no lib dir");
+    console.error("There is no bin dir");
     client.destroy();
     process.exit();
   }
