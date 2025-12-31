@@ -6,8 +6,8 @@ services:
     container_name: shorts-downloader
     restart: unless-stopped
     volumes:
-      - ./data:/srv/shorts-downloader/data
-      - ./bin:/srv/shorts-downloader/bin
+      - /srv/shorts-downloader/data:./data
+      - /srv/shorts-downloader/bin:./bin
     tty: true 
     environment:
       - TOKEN=${TOKEN}
