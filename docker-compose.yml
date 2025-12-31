@@ -9,3 +9,5 @@ services:
       - ./data:/srv/shorts-downloader/data
       - ./bin:/srv/shorts-downloader/bin
     tty: true 
+    environment:
+      - TOKEN=${TOKEN}
