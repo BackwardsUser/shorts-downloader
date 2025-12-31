@@ -13,6 +13,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-COPY --from=builder . .
+COPY --from=builder /app .
 
 CMD ["node", "dist/index.js"]
