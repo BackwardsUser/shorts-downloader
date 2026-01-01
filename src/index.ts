@@ -67,6 +67,7 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
     return;
   }
   const file = join(tmp, files[0] as string);
+  console.log(`File Size: ${statSync(file).size}`)
   if ((statSync(file).size / 1000000) >= 15) {
     fail(working, message);
     console.warn(`File too large to convert.`)
