@@ -71,6 +71,7 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
   if ((statSync(file).size / 1000000) >= 15) {
     fail(working, message);
     console.warn(`File too large to convert.`)
+    return;
   }
   // This isn't possible, but whatever.
   if (message.channel.isSendable())
@@ -147,6 +148,31 @@ function fail(working: MessageReaction, message: Message) {
   message.react('❌')
 }
 
+/**
+ * Fixes the url clutter that some websites add to URLs
+ * @param url The url to clean
+ * @returns The cleaned URL (or the original url if failed)
+ */
+function cleanUrl(url: string): string {
+  try {
+    const urlObj = new URL(url);
+
+    // Remove all query parameters
+    urlObj.search = '';
+
+    // Remove hash/fragment
+    urlObj.hash = '';
+
+    // Clean the pathname (remove trailing slashes)
+    urlObj.pathname = urlObj.pathname.replace(/\/+$/, '');
+
+    return urlObj.toString();
+  } catch (err: any) {
+    console.error('Invalid URL:', err.message);
+    return url; // Return original if parsing fails
+  }
+}
+
 /* Bot Message Event */
 client.on(Events.MessageCreate, async message => {
   /* Originally wrote this to use a command and prefix, this was easier than replacing all occurances */
@@ -179,7 +205,7 @@ client.on(Events.MessageCreate, async message => {
   const finalArgs = rawArgs.map(arg =>
     arg
       .replaceAll("(id)", id)
-      .replaceAll("(url)", url)
+      .replaceAll("(url)", cleanUrl(url))
   );
 
   const binPath = join(bins, bin);
