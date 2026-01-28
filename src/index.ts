@@ -74,8 +74,15 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
     return;
   }
   // This isn't possible, but whatever.
-  if (message.channel.isSendable())
-    await message.channel.send({ content: `Automatically converted url from ${message.author.username}`, files: [file] });
+  if (message.channel.isSendable()) {
+    try {
+      await message.channel.send({ content: `Automatically converted url from ${message.author.username}`, files: [file] });
+    } catch {
+      fail(working, message);
+      return;
+    }
+  }
+
   if (message.deletable) {
     await message.delete();
   }
