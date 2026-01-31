@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits, Message, MessageReaction } from "discord.js";
+import { ActivityType, Client, Events, GatewayIntentBits, Message, MessageReaction } from "discord.js";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { config } from "dotenv";
@@ -122,8 +122,8 @@ client.on(Events.ClientReady, c => {
     {
       activities: [
         {
-          name: "nothing.",
-          type: "PLAYING"
+          name: "Sleeping...",
+          type: ActivityType.Custom
         }
       ],
       status: 'dnd'
