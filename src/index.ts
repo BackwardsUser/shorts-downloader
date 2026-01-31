@@ -115,6 +115,18 @@ client.on(Events.ClientReady, c => {
     process.exit();
   }
 
+  c.user.setPresence(
+    {
+      activities: [
+        {
+          name: "nothing.",
+          type: "PLAYING"
+        }
+      ],
+      status: 'dnd'
+    }
+  )
+
   /* Compare existing binaries to used binaries in conversion.json */
   const cv = readFileSync(conversions).toString();
   const j = JSON.parse(cv);
