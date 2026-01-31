@@ -76,8 +76,11 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
   // This isn't possible, but whatever.
   if (message.channel.isSendable()) {
     try {
+      console.log(`Converted URL for server ${message.guild?.name}`)
       await message.channel.send({ content: `Automatically converted url from ${message.author.username}`, files: [file] });
-    } catch {
+    } catch (err) {
+      console.warn(`Failed to convert URL for server ${message.guild?.name} - URL: ${message.content}`)
+      console.warn("Discord Error: " + err);
       fail(working, message);
       return;
     }
