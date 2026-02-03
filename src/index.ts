@@ -70,7 +70,7 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
   console.log(`File Size: ${statSync(file).size}`)
   console.log((statSync(file).size / 1000000))
   if ((statSync(file).size / 1000000) >= 10) {
-    fail(working, message);
+    oversize(working, message);
     console.warn(`File too large to convert.`)
     return;
   }
@@ -157,6 +157,11 @@ client.on(Events.ClientReady, c => {
 function fail(working: MessageReaction, message: Message) {
   working.remove();
   message.react('❌')
+}
+
+function oversize(working: MessageReaction, message: Message) {
+  working.remove();
+  message.react('🐦‍⬛')
 }
 
 /* Bot Message Event */
