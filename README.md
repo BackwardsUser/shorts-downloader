@@ -6,8 +6,8 @@
 This branch contains a self-bot version of the `shorts-downloader` Discord bot.
 If you want the Discord bot version, you can find that code [on the main branch](https://github.com/BackwardsUser/shorts-downloader).
 
-**Note:** In this branch's documentation, "Discord bot" refers to your user account running as a self-bot.
-**Also Note:** This documentation doesn't cover how to retrieve your user token, it's assumed you already have it, there are plenty of other resources for that.
+**Note:** In this branch's documentation, "Discord bot" refers to your user account running as a self-bot.  
+**Also Note:** This documentation doesn't cover how to retrieve your user token, it's assumed you already have it, there are plenty of other resources for that.  
 
 # shorts-downloader
 
