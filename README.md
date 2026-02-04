@@ -3,8 +3,8 @@
 > Self-botting is against Discord's Terms of Service and may result in an account ban.
 > Use at your own risk. The [LICENSE](./LICENSE) prohibits all use, so I am not responsible.
 
-This branch contains a self-bot version of the `shorts-downloader` Discord bot version.
-If you want the Discord bot, you can find that code [on the main branch](https://github.com/BackwardsUser/shorts-downloader).
+This branch contains a self-bot version of the `shorts-downloader` Discord bot.
+If you want the Discord bot version, you can find that code [on the main branch](https://github.com/BackwardsUser/shorts-downloader).
 
 **Note:** In this branch's documentation, "Discord bot" refers to your user account running as a self-bot.
 **Also Note:** This documentation doesn't cover how to retrieve your user token, it's assumed you already have it, there are plenty of other resources for that.
