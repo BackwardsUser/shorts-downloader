@@ -167,63 +167,83 @@ function oversize(working: MessageReaction, message: Message) {
 /* Bot Message Event */
 client.on(Events.MessageCreate, async message => {
   /* Originally wrote this to use a command and prefix, this was easier than replacing all occurances */
-  const args = message.content.split(" ");
+  const unparsedArgs = message.content.split(" ");
+  const urls: string[] = [];
 
-  /* This checks every message to see if its a fitting URL */
-  /* TODO: only check messages which are URLs */
-  if (!FindMatchingURL(args[0] as string))
+  if (unparsedArgs.length > 0) {
+    // Multiple Args, find the url. Pass through the args into the new message.
+    unparsedArgs.forEach((arg, index) => {
+      if (FindMatchingURL(arg)) {
+        urls.push(arg);
+      }
+    });
+  }
+
+  if (urls.length == 0)
     return;
 
   const working = await message.react('⚙️');
 
-  if (args.length == 0) {
+  if (urls.length == 0) {
     fail(working, message);
     return;
   }
 
-  console.log(`Attempting convert of ${args}`);
+  console.log(`Attempting to convert ${urls.length} videos`);
 
-  const cmd = FindMatchingURL(args[0] as string);
-  if (!cmd) {
+  const convs: any[] = [];
+
+  urls.forEach((url) => {
+    const cmd = FindMatchingURL(url);
+    if (!cmd)
+      return;
+
+    convs.push([cmd, url]);
+  })
+
+  if (convs.length == 0) {
     fail(working, message);
     return;
   }
 
-  const id = uuidv4();
-  const url = args[0] as string;
+  let elapsed = 0;
 
-  const { bin, args: rawArgs } = cmd;
-  const finalArgs = rawArgs.map(arg =>
-    arg
-      .replaceAll("(id)", id)
-      .replaceAll("(url)", url.toString())
-  );
+  for (const [cmd, url] of convs) {
+    elapsed += 1;
+    const id = uuidv4();
+    const { bin, args: rawArgs } = cmd;
+    const finalArgs = rawArgs.map((arg: string) =>
+      arg
+        .replaceAll("(id)", id)
+        .replaceAll("(url)", url.toString())
+    );
 
-  const binPath = join(bins, bin);
+    const binPath = join(bins, bin);
 
-  const outIndex = finalArgs.findIndex(a => a.includes("tmp/"));
-  if (outIndex !== -1) {
-    finalArgs[outIndex] = resolve(process.cwd(), finalArgs[outIndex] as string);
+    const outIndex = finalArgs.findIndex((a: string) => a.includes("tmp/"));
+
+    if (outIndex !== -1)
+      finalArgs[outIndex] = resolve(process.cwd(), finalArgs[outIndex] as string);
+
+    console.log(finalArgs.join(" "));
+
+    const child = spawn(binPath, finalArgs, {
+      shell: false,
+      windowsHide: true
+    });
+
+    child.stdout.on("data", d => console.log(d.toString()));
+    child.stderr.on("data", d => console.error(d.toString()));
+
+    child.on("close", code => {
+      console.log(`yt-dlp exit with code ${code}`);
+      if (code == 0) {
+        handleSend(message, id, working)
+      } else {
+        fail(working, message);
+      }
+    });
   }
-
-  /* Create new process running media downloader binary */
-  const child = spawn(binPath, finalArgs, {
-    shell: false,
-    windowsHide: true
-  });
-
-  /* Sub-Process event handling */
-  child.stdout.on("data", d => console.log(d.toString()));
-  child.stderr.on("data", d => console.error(d.toString()));
-
-  child.on("close", code => {
-    console.log(`yt-dlp exited with code ${code}`);
-    if (code == 0) {
-      handleSend(message, id, working);
-    } else {
-      fail(working, message);
-    }
-  });
 });
 
 // Bot Login
