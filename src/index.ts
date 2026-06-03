@@ -13,9 +13,9 @@ const intents: GatewayIntentBits[] = [GatewayIntentBits.Guilds, GatewayIntentBit
 const client = new Client({ intents });
 
 /* Path constants */
-const bins = join(process.cwd(), "bin");
-const conversions = join(process.cwd(), "data", "conversion.json")
-const tmp = join(process.cwd(), "tmp");
+const bins = join(import.meta.url, "bin");
+const conversions = join(import.meta.url, "data", "conversion.json")
+const tmp = join(import.meta.url, "tmp");
 
 type CmdType = {
   bin: string,
