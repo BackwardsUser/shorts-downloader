@@ -95,9 +95,11 @@ async function handleSend(message: Message, id: string, working: any): Promise<v
   return;
 }
 
-/* Bot Started Event */
-client.on(Events.ClientReady, c => {
+client.once(Events.ClientReady, (c) => {
   console.log(`Successfully logged in as ${c.user.username}`);
+});
+
+function startup() {
   /* Check if the bins dir exists. */
   if (!existsSync(bins)) {
     console.error("There is no bin dir");
@@ -146,7 +148,7 @@ client.on(Events.ClientReady, c => {
     mkdirSync(join(process.cwd(), "tmp"));
 
   /* Note: files are created into tmp file, so it doesn't need to exist before running. */
-});
+}
 
 /**
  * Simple fail helper function
@@ -246,5 +248,13 @@ client.on(Events.MessageCreate, async message => {
   }
 });
 
-// Bot Login
-client.login(process.env.TOKEN);
+function main() {
+
+  // Ensure scripts are in the right place before starting
+  startup();
+  // Bot Login
+  client.login(process.env.TOKEN);
+
+}
+
+main();
